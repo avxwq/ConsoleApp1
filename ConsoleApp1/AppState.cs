@@ -3,6 +3,7 @@
 
 public enum CurrView
 {
+    Nawigacja,
     Produkty,
     Kategorie,
     Koszyk,
@@ -31,19 +32,24 @@ class AppState
     {
         switch(CurrentView)
         {
+            case CurrView.Nawigacja:
+                {
+                    //navbar.handleKey(Key k);
+                }break;
             case CurrView.Produkty:
                 {
-
+                    //prodTable.handleKey(Key k);
                 }break;
             
             case CurrView.Kategorie:
                 {
-
-                }break;
-
+                    //categ.handleKey(Key k);
+                }
+                break;
+                //...
             case CurrView.Koszyk:
                 {
-
+                    
                 }break;
 
             case CurrView.Profil:
