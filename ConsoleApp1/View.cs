@@ -1,4 +1,7 @@
 ﻿using Spectre.Console;
+using Spectre.Console.Rendering;
+using System;
+using System.Xml;
 
 class View
 {
@@ -77,10 +80,37 @@ class View
         var navbar = TopNavBar.GetTable();
         if (Key == "RightArrow")
         {
-            navbar.UpdateCell(0, i, "[bold red]Sklep[/]");
-            i++;
+            // Nie wiem jak wydobyc string z navbar.Columns[i].Header
+            switch (i)
+            {
+                case 0:
+               {
+                navbar.Columns[i+3].Header = new Markup("Profil");
+                navbar.Columns[i].Header = new Markup("[bold red]Sklep[/]");
+               }break;
+                case 1:
+               {
+                navbar.Columns[i - 1].Header = new Markup("Sklep");
+                navbar.Columns[i].Header = new Markup("[bold red]Kategorie[/]");
+               }break;
+                case 2:
+                {
+                navbar.Columns[i - 1].Header = new Markup("Kategorie");
+                navbar.Columns[i].Header = new Markup("[bold red]Koszyk[/]");
+               }break;
+             
+                case 3:
+                {
+                 navbar.Columns[i - 1].Header = new Markup("Koszyk");
+                  navbar.Columns[i].Header = new Markup("[bold red]Profil[/]");
+                }break;
+
+            }
+            i = (i + 1) % 4;
         }
+        //   navbar.UpdateCell(0, i, $"[bold red]Kategorie[/]");
     }
+
 
     private async void RenderWindow()
     {
@@ -120,12 +150,12 @@ class NavBar
     public NavBar()
     {
        
-        navTable.AddColumn("");
-        navTable.AddColumn("");
-        navTable.AddColumn("");
-        navTable.AddColumn("");
-        navTable.HideHeaders();
-        navTable.AddRow("Sklep", "Kategorie", "Koszyk", "Profil");
+        navTable.AddColumn("Sklep");
+        navTable.AddColumn("Kategorie");
+        navTable.AddColumn("Koszyk");
+        navTable.AddColumn("Profil");
+       // navTable.HideHeaders();
+       // navTable.AddRow("Sklep", "Kategorie", "Koszyk", "Profil");
 
     }
 
