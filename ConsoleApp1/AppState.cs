@@ -4,11 +4,11 @@
 public enum CurrView
 {
     StartView,
-    ActionPanel,
     Produkty,
     Kategorie,
     Koszyk,
-    Profil
+    Profil,
+    ActionPanel,
 }
 
 class AppState
@@ -35,6 +35,10 @@ class AppState
 
     public void UpdateWindow(string key)
     {
+        if (key == "Escape")
+        {
+            currentView = CurrView.StartView;
+        }
         if (currentView == CurrView.StartView)
         {
             if (key == "RightArrow" || key == "LeftArrow")
@@ -54,15 +58,11 @@ class AppState
                 currentView = (CurrView)selectedIndex;
                 ShowCurrentView();
             }
-       }
+        }
         
         if (currentView == CurrView.ActionPanel)
         {
             action.HandleKey(lastKeyPressed);
-            if (key == "Escape")
-            {
-                currentView = CurrView.StartView;
-            }
         }
     }
 
