@@ -24,8 +24,10 @@ class ActionPanel // klasa odpowiedzialna za wyswietlanie po prawej, tutaj wszys
             selectedIndex = key == "RightArrow" ? (selectedIndex + 1) % 2 : (selectedIndex - 1 + 2) % 2;
             ShowLoginPanel();
         }
+        
         if (key == "Escape")
         {
+            rootLayout["Action"].Update((new Panel("hello")));
 
         }
 

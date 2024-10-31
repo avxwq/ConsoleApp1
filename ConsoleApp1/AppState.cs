@@ -59,6 +59,10 @@ class AppState
         if (currentView == CurrView.ActionPanel)
         {
             action.HandleKey(lastKeyPressed);
+            if (key == "Escape")
+            {
+                currentView = CurrView.StartView;
+            }
         }
     }
 
