@@ -29,8 +29,8 @@ class AppState
 
     public void UpdateWindow(string key)
     {
-        if (currentView == CurrView.Nawigacja)
-        {
+     //   if (currentView == CurrView.Nawigacja)
+   //     {
             if (key == "RightArrow" || key == "LeftArrow")
             {
                 selectedIndex = key == "RightArrow" ? (selectedIndex + 1) % 5 : (selectedIndex - 1 + 5) % 5;
@@ -41,7 +41,7 @@ class AppState
                 currentView = (CurrView)selectedIndex;
                 ShowCurrentView();
             }
-        }
+      //  }
     }
 
     private void UpdateNavbar()
