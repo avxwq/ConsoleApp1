@@ -29,15 +29,18 @@ class AppState
 
     public void UpdateWindow(string key)
     {
-        if (key == "RightArrow" || key == "LeftArrow")
+        if (currentView == CurrView.Nawigacja)
         {
-            selectedIndex = key == "RightArrow" ? (selectedIndex + 1) % 5 : (selectedIndex - 1 + 5) % 5;
-            UpdateNavbar();
-        }
-        else if (key == "Enter")
-        {
-            currentView = (CurrView)selectedIndex;
-            ShowCurrentView();
+            if (key == "RightArrow" || key == "LeftArrow")
+            {
+                selectedIndex = key == "RightArrow" ? (selectedIndex + 1) % 5 : (selectedIndex - 1 + 5) % 5;
+                UpdateNavbar();
+            }
+            else if (key == "Enter")
+            {
+                currentView = (CurrView)selectedIndex;
+                ShowCurrentView();
+            }
         }
     }
 
@@ -87,11 +90,15 @@ class AppState
     private Panel CreateProfileView()
     {
         var profileTable = new Table();
+        // dodac jakies logowanie i rejestracja
+        List<Product> products = new List<Product>();
+        products.Add(new Product(5, "Rdest", "Ozdobne", 123, 10, "jakis kwiatek"));
+        User user = new User("Jan", "Kowalski", "12345", "jan.kowalski@example.com",products, "Aktywny");
         profileTable.AddColumn("Profil Użytkownika");
-        profileTable.AddRow($"[bold]Imię:[/] [aqua]Jan Kowalski[/]");
-        profileTable.AddRow($"[bold]Email:[/] [aqua]jan.kowalski@example.com[/]");
-        profileTable.AddRow($"[bold]Zakupione produkty:[/] [aqua]12[/]");
-        profileTable.AddRow($"[bold]Status konta:[/] [green]Aktywny[/]");
+        profileTable.AddRow($"[bold]Imię:[/] [aqua]{user.Name}[/]");
+        profileTable.AddRow($"[bold]Email:[/] [aqua]{user.Email}[/]");
+       // profileTable.AddRow($"[bold]Zakupione produkty:[/] [aqua]12[/]");
+        profileTable.AddRow($"[bold]Status konta:[/] [green]{user.Status}[/]");
 
         var actionsTable = new Table();
         actionsTable.AddColumn("[bold]Dostępne Akcje[/]");
