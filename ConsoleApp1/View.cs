@@ -46,7 +46,7 @@ class View
                                         + "- Profil: Zobacz swój profil i szczegóły konta")
                              .Header("[bold blue]Nawigacja[/]", Justify.Left);
         // Inicjalizacja ActionPanel
-        ActionPanel = new Panel("Hello").Expand();
+        ActionPanel action = new ActionPanel(RootLayout);
 
         // Ustawienie TopBar z nazwą "Navbar"
         TopBar.Update(TopNavBar.GetTable().Width(150).Alignment(Justify.Center).Expand());
@@ -68,7 +68,8 @@ class View
         HelpLayout.Update(Align.Right(
             new Help("[bold blue]Use arrows to navigate[/]\n[bold yellow]Press Enter to select[/]")
             .GetPanel().Border(BoxBorder.Rounded)).BottomAligned());
-        ActionLayout.Update(ActionPanel);
+        ActionLayout.Name = "Action";
+        ActionLayout.Update(action.GetPanel());
 
         TopBar.Size(5);
 
@@ -77,7 +78,7 @@ class View
         cursor.Hide();
 
         // Inicjalizacja AppState z odpowiednią konfiguracją RootLayout
-        state = new AppState(TopNavBar, RootLayout);
+        state = new AppState(TopNavBar, RootLayout, action);
 
         // Uruchomienie renderowania i nasłuchiwania
         Task.Run(() => state.RenderWindow());

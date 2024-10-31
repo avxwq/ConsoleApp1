@@ -30,7 +30,6 @@ public class ProductTable
         table.AddRow(itemProperties);
 
     }
-
     public Table GetTable()
     {
         return this.table;

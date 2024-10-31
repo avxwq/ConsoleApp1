@@ -3,7 +3,8 @@
 
 public enum CurrView
 {
-    Nawigacja,
+    StartView,
+    ActionPanel,
     Produkty,
     Kategorie,
     Koszyk,
@@ -13,6 +14,7 @@ public enum CurrView
 class AppState
 {
     private CurrView currentView;
+    ActionPanel action;
     private Layout rootLayout;
     private Table navbar;
     private static bool shouldUpdate = true;
@@ -21,30 +23,43 @@ class AppState
     
     private Database db;
 
-    public AppState(NavBar topNavBar, Layout rootLayout)
+    public AppState(NavBar topNavBar, Layout rootLayout, ActionPanel action)
     {
         this.navbar = topNavBar.GetTable();
+        this.action = action;
         this.rootLayout = rootLayout;
-        currentView = CurrView.Nawigacja;
+        currentView = CurrView.StartView;
         db = new Database();
         UpdateNavbar();
     }
 
     public void UpdateWindow(string key)
     {
-     //   if (currentView == CurrView.Nawigacja)
-   //     {
+        if (currentView == CurrView.StartView)
+        {
             if (key == "RightArrow" || key == "LeftArrow")
             {
                 selectedIndex = key == "RightArrow" ? (selectedIndex + 1) % 5 : (selectedIndex - 1 + 5) % 5;
                 UpdateNavbar();
             }
+
+            else if (key == "Enter" && selectedIndex == 0)
+            {
+                currentView = CurrView.ActionPanel;
+                action.ShowLoginPanel();
+            }
+
             else if (key == "Enter")
             {
                 currentView = (CurrView)selectedIndex;
                 ShowCurrentView();
             }
-      //  }
+       }
+        
+        if (currentView == CurrView.ActionPanel)
+        {
+            action.HandleKey(lastKeyPressed);
+        }
     }
 
     private void UpdateNavbar()
@@ -63,7 +78,7 @@ class AppState
     {
         var content = currentView switch
         {
-            CurrView.Nawigacja => CreateNavigationView(),
+            CurrView.StartView => CreateStartView(),
             CurrView.Produkty => CreateProductView(),
             CurrView.Kategorie => new Panel("Widok: Kategorie - Przeglądaj kategorie roślin."),
             CurrView.Koszyk => new Panel("Widok: Koszyk - Zawartość twojego koszyka."),
@@ -93,7 +108,7 @@ class AppState
 
         return prodPanel;
     }
-    private Panel CreateNavigationView()
+    private Panel CreateStartView()
     {
         var navInstructions = new Panel("[bold]Witaj w aplikacji sklepowej![/]\n\n"
                                         + "[green]Nawiguj po aplikacji za pomocą strzałek.[/]\n"
