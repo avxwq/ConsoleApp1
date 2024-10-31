@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using Spectre.Console.Extensions;
 using Spectre.Console.Rendering;
 using System;
 using System.Xml;
@@ -59,7 +60,9 @@ class View
         BottomView.SplitColumns(ProductLayout, RightBottomView);
 
         // Konfiguracja panelu pomocy i działania
-        HelpLayout.Update(new Help("[bold blue]Use arrows to navigate[/]\n[bold yellow]Press Enter to select[/]").GetPanel().Border(BoxBorder.Rounded));
+        HelpLayout.Update(Align.Right(
+            new Help("[bold blue]Use arrows to navigate[/]\n[bold yellow]Press Enter to select[/]")
+            .GetPanel().Border(BoxBorder.Rounded)).BottomAligned());
         ActionLayout.Update(ActionPanel);
 
         TopBar.Size(5);
