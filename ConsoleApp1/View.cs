@@ -7,7 +7,7 @@ using System.Xml;
 class View
 {
     private AppState state;
-    private Table table;
+    private Table table = new Table();
     private Panel ActionPanel;
 
     private Layout RootLayout;
@@ -16,13 +16,12 @@ class View
     private Layout RightBottomView;
     private Layout ActionLayout;
     private Layout HelpLayout;
-    private Layout ProductLayout;
+    private Layout StartLayout;
 
     NavBar TopNavBar = new NavBar();
 
-    public View(ProductTable productTable)
+    public View()
     {
-        this.table = productTable.GetTable();
 
         RootLayout = new Layout();
         TopBar = new Layout();
@@ -30,16 +29,22 @@ class View
         RightBottomView = new Layout();
         ActionLayout = new Layout();
         HelpLayout = new Layout();
-        ProductLayout = new Layout();
+        StartLayout = new Layout();
 
         generateLayout();
     }
 
     private void generateLayout()
     {
-        // Tworzenie panelu widoku produktów
-        Panel productView = new Panel(table.Alignment(Justify.Left)).Border(BoxBorder.None);
-
+        var StartingView = new Panel("[bold]Witaj w aplikacji sklepowej![/]\n\n"
+                                        + "[green]Nawiguj po aplikacji za pomocą strzałek.[/]\n"
+                                        + "Aby przejść do wybranej sekcji, naciśnij [bold]Enter[/].\n\n"
+                                        + "Dostępne sekcje:\n"
+                                        + "- Produkty: Przeglądaj dostępne rośliny\n"
+                                        + "- Kategorie: Znajdź produkty według kategorii\n"
+                                        + "- Koszyk: Zobacz zawartość koszyka\n"
+                                        + "- Profil: Zobacz swój profil i szczegóły konta")
+                             .Header("[bold blue]Nawigacja[/]", Justify.Left);
         // Inicjalizacja ActionPanel
         ActionPanel = new Panel("Hello").Expand();
 
@@ -54,10 +59,10 @@ class View
         );
 
         // Przypisanie nazw i zaktualizowanie zawartości layoutów dla widoków
-        ProductLayout.Update(productView);
-        ProductLayout.Name = "Content"; // Nazwa wymagana dla widoków, aby AppState mogło aktualizować zawartość
+        StartLayout.Update(StartingView);
+        StartLayout.Name = "Content"; // Nazwa wymagana dla widoków, aby AppState mogło aktualizować zawartość
         RightBottomView.SplitRows(ActionLayout, HelpLayout);
-        BottomView.SplitColumns(ProductLayout, RightBottomView);
+        BottomView.SplitColumns(StartLayout, RightBottomView);
 
         // Konfiguracja panelu pomocy i działania
         HelpLayout.Update(Align.Right(
