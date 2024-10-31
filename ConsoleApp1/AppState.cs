@@ -18,12 +18,15 @@ class AppState
     private static bool shouldUpdate = true;
     private static string lastKeyPressed = "None";
     private static int selectedIndex = 0;
+    
+    private Database db;
 
     public AppState(NavBar topNavBar, Layout rootLayout)
     {
         this.navbar = topNavBar.GetTable();
         this.rootLayout = rootLayout;
         currentView = CurrView.Nawigacja;
+        db = new Database();
         UpdateNavbar();
     }
 
@@ -74,26 +77,21 @@ class AppState
 
     private Panel CreateProductView()
     {
-        ProductTable table = new ProductTable();
-        Product product = new Product(0, "Kapusta", "Spożywcze", 20, 1, "Ok");
-        Product product1 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product2 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product3 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product4 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product5 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product6 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product7 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        Product product8 = new Product(1, "Róża", "Ogrodowe", 50, 25, "Róża do dekoracji");
-        table.AddProduct(product);
-        table.AddProduct(product2);
-        table.AddProduct(product3);
-        table.AddProduct(product4);
-        table.AddProduct(product5);
-        table.AddProduct(product6);
-        // Tworzenie panelu widoku produktów
-        var prodTable = new Panel(table.GetTable().Alignment(Justify.Left)).Border(BoxBorder.None);
+        var products = db.GetAllProducts();
 
-        return prodTable;
+        ProductTable prodTable = new ProductTable();
+
+        foreach (var p in products)
+        {
+
+            prodTable.AddProduct(p);
+        }
+
+        var prodPanel = new Panel(prodTable.GetTable())
+        {
+        };
+
+        return prodPanel;
     }
     private Panel CreateNavigationView()
     {
@@ -113,15 +111,12 @@ class AppState
     private Panel CreateProfileView()
     {
         var profileTable = new Table();
-        // dodac jakies logowanie i rejestracja
-        List<Product> products = new List<Product>();
-        products.Add(new Product(5, "Rdest", "Ozdobne", 123, 10, "jakis kwiatek"));
-        User user = new User("Jan", "Kowalski", "12345", "jan.kowalski@example.com",products, "Aktywny");
-        profileTable.AddColumn("Profil Użytkownika");
-        profileTable.AddRow($"[bold]Imię:[/] [aqua]{user.Name}[/]");
-        profileTable.AddRow($"[bold]Email:[/] [aqua]{user.Email}[/]");
+
+     //   profileTable.AddColumn("Profil Użytkownika");
+     //   profileTable.AddRow($"[bold]Imię:[/] [aqua]{user.Name}[/]");
+     //   profileTable.AddRow($"[bold]Email:[/] [aqua]{user.Email}[/]");
        // profileTable.AddRow($"[bold]Zakupione produkty:[/] [aqua]12[/]");
-        profileTable.AddRow($"[bold]Status konta:[/] [green]{user.Status}[/]");
+      //  profileTable.AddRow($"[bold]Status konta:[/] [green]{user.Status}[/]");
 
         var actionsTable = new Table();
         actionsTable.AddColumn("[bold]Dostępne Akcje[/]");
